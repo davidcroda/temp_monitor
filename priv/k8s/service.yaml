@@ -1,0 +1,113 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: monitor-pv
+  namespace: monitor
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: /data/temp-monitor
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: monitor-pvc
+  namespace: monitor
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temp-monitor
+  namespace: monitor
+  labels:
+    app: temp-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: temp-monitor
+  template:
+    metadata:
+      labels:
+        app: temp-monitor
+    spec:
+      containers:
+      - name: temp-monitor
+        image: davidcroda/temp_monitor:latest
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /mnt/data
+            name: temp-monitor-vol
+        env:
+          - name: SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                name: temp-monitor-secrets
+                key: secret_key_base 
+          - name: DATABASE_PATH
+            value: /mnt/data/db.sqlite
+          - name: PHX_HOST
+            value: monitor.local.daveroda.com 
+          - name: PORT
+            value: "4000"
+      volumes:
+        - name: temp-monitor-vol
+          persistentVolumeClaim:
+            claimName: monitor-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: temp-monitor
+  namespace: monitor
+spec:
+  selector:
+    app: temp-monitor
+  ports:
+    - port: 80
+      targetPort: 4000
+  type: LoadBalancer
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: temp-monitor
+  namespace: monitor
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`monitor.local.daveroda.com`)
+      services:
+        - kind: Service
+          name: temp-monitor
+          port: 80
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: temp-monitor-http
+  namespace: monitor
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`monitor.local.daveroda.com`)
+      services:
+        - kind: Service
+          name: temp-monitor
+          port: 80
