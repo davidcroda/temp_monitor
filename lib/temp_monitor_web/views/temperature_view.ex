@@ -14,7 +14,8 @@ defmodule TempMonitorWeb.TemperatureView do
     %{
       id: temperature.id,
       temperature: temperature.temperature,
-      humidity: temperature.humidity
+      humidity: temperature.humidity,
+      inserted_at: DateTime.from_naive!(temperature.inserted_at, "America/New_York")
     }
   end
 end

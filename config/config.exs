@@ -7,6 +7,8 @@
 # General application configuration
 import Config
 
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+
 config :temp_monitor,
   ecto_repos: [TempMonitor.Repo]
 

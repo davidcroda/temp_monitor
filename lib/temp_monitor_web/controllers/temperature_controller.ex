@@ -7,7 +7,7 @@ defmodule TempMonitorWeb.TemperatureController do
   action_fallback TempMonitorWeb.FallbackController
 
   def index(conn, _params) do
-    temperatures = Data.list_temperatures()
+    temperatures = Data.list_temperatures(60)
     render(conn, "index.json", temperatures: temperatures)
   end
 

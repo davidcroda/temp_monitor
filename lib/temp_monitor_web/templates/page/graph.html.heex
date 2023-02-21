@@ -1,5 +1,9 @@
-<script src="https://d3js.org/d3.v6.js"></script>
-<section class="">
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+<hr />
+<h1>Current</h1>
+<section>
   <p>
     <b>Temperature: </b><%= @temp.temperature %>
   </p>
@@ -10,3 +14,6 @@
     <b>Last Update: </b><%= @temp.inserted_at %>
   </p>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
