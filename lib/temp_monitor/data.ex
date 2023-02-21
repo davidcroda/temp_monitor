@@ -26,8 +26,11 @@ defmodule TempMonitor.Data do
 
   def average_temperatures(number \\ 5) do
     Repo.one(
-      from(t in Temperature, select: avg(t.temperature)),
-      limit: number
+      from(t in Temperature,
+        select: avg(t.temperature),
+        limit: ^number,
+        order_by: [desc: :inserted_at]
+      )
     )
   end
 

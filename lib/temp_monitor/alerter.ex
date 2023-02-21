@@ -44,7 +44,7 @@ defmodule TempMonitor.Alerter do
 
     valid_temp = validate_temperature(average_temp)
 
-    Logger.debug(
+    Logger.info(
       "Temp Current: #{current}, Average Temp: #{average_temp}, Valid Temp: #{valid_temp}"
     )
 
