@@ -25,13 +25,10 @@ defmodule TempMonitor.Data do
   end
 
   def average_temperatures(number \\ 5) do
-    Repo.one(
-      from(t in Temperature,
-        select: avg(t.temperature),
-        limit: ^number,
-        order_by: [desc: :inserted_at]
-      )
-    )
+    list_temperatures(number)
+    |> Enum.map(& &1.temperature)
+    |> Enum.sum()
+    |> Kernel./(number)
   end
 
   @doc """
