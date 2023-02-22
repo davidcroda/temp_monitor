@@ -49,9 +49,10 @@ defmodule TempMonitor.Alerts.Alerter do
 
   def handle_info(:check_temps, state) do
     current =
-      Data.get_latest_temperature()
-      |> Map.fetch!(:inserted_at)
-      |> validate_current
+      case Data.get_latest_temperature() do
+        nil -> true
+        temp -> Map.fetch!(temp, :inserted_at) |> validate_current
+      end
 
     average_temp =
       Data.average_temperatures(5)
