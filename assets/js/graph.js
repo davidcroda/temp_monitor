@@ -24,7 +24,8 @@ async function loadGraph() {
             parser: (date) => {
               return moment(date).subtract(5, 'hours')
             }
-          }
+          },
+          max: new Date()
         }
       }
     }
