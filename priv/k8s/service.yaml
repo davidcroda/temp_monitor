@@ -60,6 +60,16 @@ spec:
             value: monitor.local.daveroda.com 
           - name: PORT
             value: "4000"
+          - name: TWILIO_ACCOUNT_SID
+            valueFrom:
+              secretKeyRef:
+                name: twilio
+                key: account-sid
+          - name: TWILIO_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: twilio
+                key: auth-token
       volumes:
         - name: temp-monitor-vol
           persistentVolumeClaim:

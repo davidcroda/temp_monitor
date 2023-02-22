@@ -1,7 +1,8 @@
-defmodule TempMonitor.Alerter do
+defmodule TempMonitor.Alerts.Alerter do
   use GenServer
   require Logger
   alias TempMonitor.Data
+  alias TempMonitor.Alerts
 
   @max_time_threshold 600
   @max_average_temperature 5
@@ -25,11 +26,25 @@ defmodule TempMonitor.Alerter do
       NaiveDateTime.utc_now()
       |> NaiveDateTime.diff(temperature)
 
-    diff < @max_time_threshold
+    valid = diff < @max_time_threshold
+
+    if !valid do
+      Alerts.notify_all("Last freezer temperature reading [#{diff}] seconds ago!")
+    end
+
+    valid
   end
 
   def validate_temperature(average_temperature) do
-    average_temperature < @max_average_temperature
+    valid = average_temperature < @max_average_temperature
+
+    if !valid do
+      Alerts.notify_all(
+        "Freezer average temperature [#{average_temperature}] greater than threshold [#{@max_average_temperature}]!"
+      )
+    end
+
+    valid
   end
 
   def handle_info(:check_temps, state) do

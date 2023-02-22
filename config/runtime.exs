@@ -20,6 +20,10 @@ if System.get_env("PHX_SERVER") do
   config :temp_monitor, TempMonitorWeb.Endpoint, server: true
 end
 
+config :ex_twilio,
+  account_sid: System.get_env("TWILIO_ACCOUNT_SID"),
+  auth_token: System.get_env("TWILIO_AUTH_TOKEN")
+
 if config_env() == :prod do
   database_path =
     System.get_env("DATABASE_PATH") ||

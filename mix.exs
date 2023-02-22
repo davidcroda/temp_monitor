@@ -48,7 +48,8 @@ defmodule TempMonitor.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:tzdata, "~> 1.1"}
+      {:tzdata, "~> 1.1"},
+      {:ex_twilio, "~> 0.9.1"}
     ]
   end
 

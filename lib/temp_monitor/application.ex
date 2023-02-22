@@ -18,7 +18,7 @@ defmodule TempMonitor.Application do
       TempMonitorWeb.Endpoint,
       # Start a worker by calling: TempMonitor.Worker.start_link(arg)
       # {TempMonitor.Worker, arg}
-      TempMonitor.Alerter
+      TempMonitor.Alerts.Alerter
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

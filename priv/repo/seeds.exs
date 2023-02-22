@@ -9,3 +9,8 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+TempMonitor.Repo.insert!(%TempMonitor.Alerts.Account{
+  name: "Dad",
+  phone: "+15558675309"
+})
