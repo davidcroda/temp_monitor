@@ -5,9 +5,9 @@ defmodule TempMonitor.Alerts.Account do
   schema "accounts" do
     field :name, :string
     field :phone, :string
-    field :last_notified, :naive_datetime
+    field :last_notified, :utc_datetime
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

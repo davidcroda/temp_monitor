@@ -6,7 +6,7 @@ defmodule TempMonitor.Repo.Migrations.CreateTemperatures do
       add :temperature, :float
       add :humidity, :float, null: true
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
   end
 end

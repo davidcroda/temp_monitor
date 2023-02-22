@@ -6,7 +6,7 @@ defmodule TempMonitor.Data.Temperature do
     field :humidity, :float
     field :temperature, :float
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false
