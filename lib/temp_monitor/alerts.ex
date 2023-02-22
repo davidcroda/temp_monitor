@@ -24,11 +24,13 @@ defmodule TempMonitor.Alerts do
   end
 
   def list_accounts_not_notified(since_seconds) do
-    now = NaiveDateTime.utc_now()
+    deadline =
+      NaiveDateTime.utc_now()
+      |> NaiveDateTime.add(-1 * since_seconds)
 
     query =
       from a in Account,
-        where: ^now - a.last_notified > ^since_seconds,
+        where: a.last_notified < ^deadline,
         or_where: is_nil(a.last_notified),
         select: a
 
