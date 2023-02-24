@@ -1,10 +1,13 @@
 defmodule TempMonitorWeb.TemperatureController do
   use TempMonitorWeb, :controller
 
+  alias Phoenix.PubSub
   alias TempMonitor.Data
   alias TempMonitor.Data.Temperature
 
-  action_fallback TempMonitorWeb.FallbackController
+  @topic "readings"
+
+  action_fallback(TempMonitorWeb.FallbackController)
 
   def index(conn, _params) do
     temperatures = Data.list_temperatures(60)
@@ -13,6 +16,8 @@ defmodule TempMonitorWeb.TemperatureController do
 
   def create(conn, temperature_params) do
     with {:ok, %Temperature{} = temperature} <- Data.create_temperature(temperature_params) do
+      :ok = PubSub.broadcast(TempMonitor.PubSub, @topic, %{temperature: temperature})
+
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.temperature_path(conn, :show, temperature))
