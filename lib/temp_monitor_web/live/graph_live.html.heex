@@ -4,19 +4,45 @@
   </div>
   <div class="py-4">
     <div>
-      <ul>
-        <%= for account <- @accounts do %>
-          <li class="text-lg" phx-click="toggle_notify" phx-value-account={account.id}>
-            <%= account.name %> (<%= account.phone %>) <%= case account.notify do
-              true -> raw("<span class='font-bold text-lime-400'>✓</span>")
-              false -> raw("<span class='font-bold text-red-600'>X</span>")
-            end %>
-          </li>
-        <% end %>
-      </ul>
+      <table class="">
+        <thead class="border border-slate-300 text-slate-900 border-spacing-2">
+          <tr class="font-semibold ">
+            <th class="text-left p-1">
+              Name
+            </th>
+            <th class="p-1"><i class="font-bold fa-solid fa-envelope"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for account <- @accounts do %>
+            <tr class="">
+              <td class="p-1">
+                <div class="">
+                  <%= account.name %> (<%= account.phone %>)
+                </div>
+              </td>
+              <td>
+                <div
+                  class="text-lg shadow-md rounded-md p-2 bg-slate-300 border-zinc-400 border-solid border-2 cursor-pointer"
+                  phx-click="toggle_notify"
+                  phx-value-account={account.id}
+                >
+                  <%= case account.notify do
+                    true ->
+                      raw("<i class='font-bold fa-solid fa-check text-green-500'></i>")
+
+                    false ->
+                      raw("<i class=\"fa-solid fa-circle-xmark font-bold text-red-600\"></i>")
+                  end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
     <%= if @temperature do %>
-      <hr />
+      <hr class="pb-4" />
       <div>
         <ul>
           <li><b>Temperature:</b>

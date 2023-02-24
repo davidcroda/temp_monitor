@@ -14,9 +14,11 @@
       src={Routes.static_path(@conn, "/assets/app.js")}
     >
     </script>
+    <script src="https://kit.fontawesome.com/e8a68927c0.js" crossorigin="anonymous">
+    </script>
   </head>
-  <body>
-    <div class="container mx-auto px-2 py-4">
+  <body class="bg-zinc-400">
+    <div class="container mx-auto px-2 py-4 bg-gray-100 rounded-lg my-4">
       <%= @inner_content %>
     </div>
   </body>
