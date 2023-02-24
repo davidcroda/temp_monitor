@@ -10,7 +10,6 @@ defmodule TempMonitorWeb.GraphLive do
   @topic "readings"
 
   def mount(_params, _assigns, socket) do
-    Logger.debug("MOUNTTTTT")
     PubSub.subscribe(TempMonitor.PubSub, @topic)
 
     {:ok,
@@ -25,7 +24,7 @@ defmodule TempMonitorWeb.GraphLive do
     chart =
       Map.fetch!(socket.assigns, :temperatures)
       |> Contex.Dataset.new()
-      |> Contex.LinePlot.new()
+      |> Contex.LinePlot.new(colour_palette: :pastel)
 
     assign(
       socket,
@@ -38,7 +37,6 @@ defmodule TempMonitorWeb.GraphLive do
 
   def handle_info(%{temperature: temperature}, socket) do
     dataPoint = {temperature.inserted_at, temperature.temperature}
-    Logger.warn("HANDLE_INFO")
 
     {:noreply,
      socket

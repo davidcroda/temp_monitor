@@ -1,19 +1,8 @@
-<div>
-  <%= @plot %>
-</div>
-<hr />
-<%= if @temperature do %>
-  <section class="py-4 columns-2">
-    <div class="overflow-auto">
-      <ul>
-        <li><b>Temperature:</b>
-          <%= @temperature.temperature %></li>
-        <li><b>Humidity:</b>
-          <%= @temperature.humidity || "N/A" %></li>
-        <li><b>Last Update:</b>
-          <%= Calendar.strftime(@temperature.inserted_at, "%I:%M:%S %p") %></li>
-      </ul>
-    </div>
+<div class="grid grid-cols-4">
+  <div class="col-span-3">
+    <%= @plot %>
+  </div>
+  <div class="py-4">
     <div>
       <ul>
         <%= for account <- @accounts do %>
@@ -26,5 +15,18 @@
         <% end %>
       </ul>
     </div>
-  </section>
-<% end %>
+    <%= if @temperature do %>
+      <hr />
+      <div>
+        <ul>
+          <li><b>Temperature:</b>
+            <%= @temperature.temperature %></li>
+          <li><b>Humidity:</b>
+            <%= @temperature.humidity || "N/A" %></li>
+          <li><b>Last Update:</b>
+            <%= Calendar.strftime(@temperature.inserted_at, "%I:%M:%S %p") %></li>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</div>
