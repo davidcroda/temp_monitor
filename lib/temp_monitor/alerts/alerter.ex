@@ -4,7 +4,7 @@ defmodule TempMonitor.Alerts.Alerter do
   alias TempMonitor.Data
   alias TempMonitor.Alerts
 
-  @max_time_threshold 600
+  @max_time_threshold 300
   @max_average_temperature 5
   @check_interval 60_000
 
@@ -63,6 +63,8 @@ defmodule TempMonitor.Alerts.Alerter do
     Logger.info(
       "Temp Current: #{current}, Average Temp: #{average_temp}, Valid Temp: #{valid_temp}"
     )
+
+    Data.prune_old_temperatures()
 
     schedule_work()
 

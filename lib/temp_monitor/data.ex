@@ -136,4 +136,15 @@ defmodule TempMonitor.Data do
   def change_temperature(%Temperature{} = temperature, attrs \\ %{}) do
     Temperature.changeset(temperature, attrs)
   end
+
+  def prune_old_temperatures() do
+    threshold = DateTime.add(DateTime.utc_now(), -6, :hour)
+
+    {count, _} =
+      Temperature
+      |> where([t], t.inserted_at < ^threshold)
+      |> Repo.delete_all()
+
+    Logger.debug("Pruned #{count} records")
+  end
 end

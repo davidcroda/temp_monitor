@@ -14,7 +14,7 @@ defmodule TempMonitor.Alerts.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:name, :phone, :notify])
+    |> cast(attrs, [:name, :phone, :notify, :last_notified])
     |> validate_required([:name, :phone])
     |> unique_constraint(:phone)
   end
