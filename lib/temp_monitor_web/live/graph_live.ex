@@ -10,6 +10,7 @@ defmodule TempMonitorWeb.GraphLive do
   @topic "readings"
 
   def mount(_params, _assigns, socket) do
+    Logger.debug("MOUNTTTTT")
     PubSub.subscribe(TempMonitor.PubSub, @topic)
 
     {:ok,
@@ -35,8 +36,32 @@ defmodule TempMonitorWeb.GraphLive do
     )
   end
 
-  def handle_info(%{topic: @topic, payload: %{temperature: temperature}}, socket) do
+  def handle_info(%{temperature: temperature}, socket) do
     dataPoint = {temperature.inserted_at, temperature.temperature}
-    assign(socket, :temperatures, [dataPoint | socket.assigns[:temperatures]])
+    Logger.warn("HANDLE_INFO")
+
+    {:noreply,
+     socket
+     |> assign(:temperatures, [dataPoint | socket.assigns[:temperatures]])
+     |> assign(:temperature, temperature)
+     |> build_chart()}
+  end
+
+  def handle_event("toggle_notify", %{"account" => id}, socket) do
+    account = Alerts.get_account!(id)
+    {:ok, account} = Alerts.update_account(account, %{notify: !account.notify})
+
+    {:noreply,
+     assign(
+       socket,
+       :accounts,
+       socket.assigns[:accounts]
+       |> Enum.map(fn a ->
+         case a.id == account.id do
+           true -> account
+           false -> a
+         end
+       end)
+     )}
   end
 end

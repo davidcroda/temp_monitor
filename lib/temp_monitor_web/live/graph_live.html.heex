@@ -17,7 +17,7 @@
     <div>
       <ul>
         <%= for account <- @accounts do %>
-          <li class="text-lg">
+          <li class="text-lg" phx-click="toggle_notify" phx-value-account={account.id}>
             <%= account.name %> (<%= account.phone %>) <%= case account.notify do
               true -> raw("<span class='font-bold text-lime-400'>✓</span>")
               false -> raw("<span class='font-bold text-red-600'>X</span>")
