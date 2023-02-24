@@ -8,6 +8,17 @@ defmodule TempMonitor.Data do
 
   alias TempMonitor.Data.Temperature
 
+  require Logger
+
+  def list_query(since \\ 60) do
+    date_since = DateTime.add(DateTime.utc_now(), -1 * since, :minute)
+
+    Temperature
+    |> limit(^since)
+    |> where([t], t.inserted_at > ^date_since)
+    |> order_by(desc: :inserted_at)
+  end
+
   @doc """
   Returns the list of temperatures.
 
@@ -17,10 +28,14 @@ defmodule TempMonitor.Data do
       [%Temperature{}, ...]
 
   """
-  def list_temperatures(limit \\ 10) do
-    Temperature
-    |> limit(^limit)
-    |> order_by(desc: :inserted_at)
+  def list_temperatures(since \\ 60) do
+    list_query(since)
+    |> Repo.all()
+  end
+
+  def list_temperatures_for_graph(since \\ 60) do
+    list_query(since)
+    |> select([t], {t.inserted_at, t.temperature})
     |> Repo.all()
   end
 

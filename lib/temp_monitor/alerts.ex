@@ -126,19 +126,25 @@ defmodule TempMonitor.Alerts do
 
   def notify_all(message) do
     list_accounts_not_notified(3600)
-    |> Enum.each(&send_notification(&1, message))
+    |> Enum.each(&maybe_send_notification(&1, message))
   end
 
-  def send_notification(%Account{} = account, message) do
+  def maybe_send_notification(%Account{} = account, message) do
     Logger.debug("send_notification: #{inspect(account)}, #{message}")
 
-    case ExTwilio.Message.create(
-           to: account.phone,
-           from: "+18447530112",
-           body: "#{account.name}: #{message}"
-         ) do
-      {:ok, _} -> set_last_notification(account)
-      {:error, error, _} -> Logger.error("Error sending notification: #{inspect(error)}")
+    case account.notify do
+      true ->
+        case ExTwilio.Message.create(
+               to: account.phone,
+               from: "+18447530112",
+               body: "#{account.name}: #{message}"
+             ) do
+          {:ok, _} -> set_last_notification(account)
+          {:error, error, _} -> Logger.error("Error sending notification: #{inspect(error)}")
+        end
+
+      false ->
+        Logger.debug("notify = false, skipping notification for #{account.name}")
     end
   end
 end

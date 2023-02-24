@@ -12,7 +12,7 @@ defmodule TempMonitor.Data.Temperature do
   @doc false
   def changeset(temperature, attrs) do
     temperature
-    |> cast(attrs, [:temperature, :humidity])
+    |> cast(attrs, [:temperature, :humidity, :inserted_at])
     |> validate_required([:temperature])
   end
 end

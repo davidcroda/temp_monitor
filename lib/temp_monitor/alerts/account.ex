@@ -5,6 +5,7 @@ defmodule TempMonitor.Alerts.Account do
   schema "accounts" do
     field :name, :string
     field :phone, :string
+    field :notify, :boolean, default: true
     field :last_notified, :utc_datetime
 
     timestamps(type: :utc_datetime)
@@ -13,7 +14,7 @@ defmodule TempMonitor.Alerts.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:name, :phone, :last_notified])
+    |> cast(attrs, [:name, :phone, :notify])
     |> validate_required([:name, :phone])
     |> unique_constraint(:phone)
   end

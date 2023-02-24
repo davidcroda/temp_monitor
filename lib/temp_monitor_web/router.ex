@@ -18,7 +18,8 @@ defmodule TempMonitorWeb.Router do
     pipe_through :browser
 
     # get "/", PageController, :index
-    get "/", PageController, :graph
+    # get "/", PageController, :graph
+    live "/", GraphLive
   end
 
   # Other scopes may use custom stacks.
@@ -26,6 +27,7 @@ defmodule TempMonitorWeb.Router do
     pipe_through :api
 
     resources "/temperatures", TemperatureController
+    resources "/accounts", AccountController
   end
 
   # Enables the Swoosh mailbox preview in development.
