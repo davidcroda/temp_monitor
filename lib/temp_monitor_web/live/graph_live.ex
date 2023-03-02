@@ -26,18 +26,26 @@ defmodule TempMonitorWeb.GraphLive do
   end
 
   defp build_chart(socket) do
-    chart =
-      Map.fetch!(socket.assigns, :temperatures)
-      |> Contex.Dataset.new()
-      |> Contex.LinePlot.new(colour_palette: :pastel)
+    temperatures = Map.fetch!(socket.assigns, :temperatures)
 
-    assign(
-      socket,
-      :plot,
-      Plot.new(800, 600, chart)
-      |> Plot.axis_labels("Time", "Temperature")
-      |> Plot.to_svg()
-    )
+    case length(temperatures) do
+      0 ->
+        assign(socket, :plot, raw("<h1 class='text-2xl'>No temperature data available</h1>"))
+
+      _ ->
+        chart =
+          temperatures
+          |> Contex.Dataset.new()
+          |> Contex.LinePlot.new(colour_palette: :pastel)
+
+        assign(
+          socket,
+          :plot,
+          Plot.new(800, 600, chart)
+          |> Plot.axis_labels("Time", "Temperature")
+          |> Plot.to_svg()
+        )
+    end
   end
 
   def handle_info(%{temperature: temperature}, socket) do
