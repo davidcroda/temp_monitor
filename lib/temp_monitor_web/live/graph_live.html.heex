@@ -1,20 +1,8 @@
-<div class="grid">
-  <.form let={f} for={:filter} phx-change="filter_graph">
-    <%= select(
-      f,
-      :since,
-      Enum.map(
-        60..360//60,
-        &{:"Last #{:erlang.float_to_binary(&1 / 60, decimals: 0)} Hour(s)", &1}
-      )
-    ) %>
-  </.form>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-4">
+<div class="grid grid-cols-1 lg:grid-cols-4 p-4">
   <div class="lg:col-span-3">
     <%= @plot %>
   </div>
-  <div class="py-4">
+  <div class="py-4 lg:px-4 pl-16 flex lg:flex-col flex-row justify-between">
     <div>
       <table class="">
         <thead class="border border-slate-300 text-slate-900 border-spacing-2">
@@ -52,19 +40,31 @@
           <% end %>
         </tbody>
       </table>
+      <%= if @temperature do %>
+        <hr class="pb-4" />
+        <div>
+          <ul>
+            <li><b>Temperature:</b>
+              <%= @temperature.temperature %></li>
+            <li><b>Humidity:</b>
+              <%= @temperature.humidity || "N/A" %></li>
+            <li><b>Last Update:</b>
+              <%= Calendar.strftime(@temperature.inserted_at, "%I:%M:%S %p") %></li>
+          </ul>
+        </div>
+      <% end %>
     </div>
-    <%= if @temperature do %>
-      <hr class="pb-4" />
-      <div>
-        <ul>
-          <li><b>Temperature:</b>
-            <%= @temperature.temperature %></li>
-          <li><b>Humidity:</b>
-            <%= @temperature.humidity || "N/A" %></li>
-          <li><b>Last Update:</b>
-            <%= Calendar.strftime(@temperature.inserted_at, "%I:%M:%S %p") %></li>
-        </ul>
-      </div>
-    <% end %>
+    <div>
+      <.form let={f} for={:filter} phx-change="filter_graph">
+        <%= select(
+          f,
+          :since,
+          Enum.map(
+            60..360//60,
+            &{:"Last #{:erlang.float_to_binary(&1 / 60, decimals: 0)} Hour(s)", &1}
+          )
+        ) %>
+      </.form>
+    </div>
   </div>
 </div>
