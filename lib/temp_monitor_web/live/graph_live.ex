@@ -14,10 +14,15 @@ defmodule TempMonitorWeb.GraphLive do
 
     {:ok,
      socket
-     |> assign(:temperatures, Data.list_temperatures_for_graph())
      |> assign(:temperature, Data.get_latest_temperature())
      |> assign(:accounts, Alerts.list_accounts())
-     |> build_chart()}
+     |> filter_graph()}
+  end
+
+  defp filter_graph(socket, since \\ 60) do
+    socket
+    |> assign(:temperatures, Data.list_temperatures_for_graph(since))
+    |> build_chart()
   end
 
   defp build_chart(socket) do
@@ -43,6 +48,11 @@ defmodule TempMonitorWeb.GraphLive do
      |> assign(:temperatures, [dataPoint | socket.assigns[:temperatures]])
      |> assign(:temperature, temperature)
      |> build_chart()}
+  end
+
+  def handle_event("filter_graph", %{"filter" => %{"since" => since}}, socket) do
+    {since, _} = Integer.parse(since)
+    {:noreply, filter_graph(socket, since)}
   end
 
   def handle_event("toggle_notify", %{"account" => id}, socket) do
