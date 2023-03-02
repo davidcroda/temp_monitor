@@ -4,7 +4,7 @@ Simple phoenix backend to accept incoming temperature readings from an ESP8266 w
 in my basement chest freezer. Sends SMS notifications if no readings within a 5 minute span or if the average
 temperature over 10 minutes rises above 10 degrees fahrenheit.
 
-Uses 'Context Charts](https://contex-charts.org/) to generate graphs server side and displays in a Phoenix
+Uses [Context Charts](https://contex-charts.org/) to generate graphs server side and displays in a Phoenix
 LiveView.
 
 # Setup
