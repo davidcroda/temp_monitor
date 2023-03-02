@@ -1,5 +1,7 @@
 # TempMonitor
 
+![Screenshot 2023-03-02 at 2 35 51 PM](https://user-images.githubusercontent.com/115285/222534358-1fb9c74e-7bcc-4d83-b4fd-8a2adb44e1fa.png)
+
 Simple phoenix backend to accept incoming temperature readings from an ESP8266 with a DHT22 temperature sensor
 in my basement chest freezer. Sends SMS notifications if no readings within a 5 minute span or if the average
 temperature over 10 minutes rises above 10 degrees fahrenheit.
