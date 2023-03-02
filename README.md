@@ -13,6 +13,10 @@ LiveView.
   * Create and migrate your database with `mix ecto.setup`
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
+# Docker
+  * `mix docker.build`
+  * `mix docker.push`
+
 # K8S
   * Kubernetes deployment available in [`priv/k8s/service.yaml`](priv/k8s/service.yaml)
   * `kubectl create secret generic temp-monitor-secrets --from-literal="secret-key-base=SECRET_KEY_BASE"`
