@@ -20,7 +20,7 @@ TempMonitor.Repo.insert(
 
 for n <- 1..1000 do
   TempMonitor.Repo.insert!(%TempMonitor.Data.Temperature{
-    temperature: :rand.uniform(70) / 1,
+    temperature: :rand.uniform(10) / 1,
     inserted_at: DateTime.truncate(DateTime.add(DateTime.utc_now(), -1 * n, :minute), :second)
   })
 end
