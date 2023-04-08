@@ -20,7 +20,7 @@ defmodule TempMonitorWeb.Endpoint do
     at: "/",
     from: :temp_monitor,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: TempMonitorWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
