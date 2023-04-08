@@ -17,6 +17,8 @@ defmodule TempMonitorWeb do
   and import those modules here.
   """
 
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: TempMonitorWeb
@@ -24,6 +26,8 @@ defmodule TempMonitorWeb do
       import Plug.Conn
       import TempMonitorWeb.Gettext
       alias TempMonitorWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
     end
   end
 
@@ -45,7 +49,7 @@ defmodule TempMonitorWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {TempMonitorWeb.LayoutView, "live.html"}
+        layout: {TempMonitorWeb.LayoutView, :app}
 
       unquote(view_helpers())
     end
@@ -90,14 +94,24 @@ defmodule TempMonitorWeb do
       use Phoenix.HTML
 
       # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-      import Phoenix.LiveView.Helpers
+      import Phoenix.Component
+      import TempMonitorWeb.CoreComponents
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import TempMonitorWeb.ErrorHelpers
       import TempMonitorWeb.Gettext
       alias TempMonitorWeb.Router.Helpers, as: Routes
+      unquote(verified_routes())
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: TempMonitorWeb.Endpoint,
+        router: TempMonitorWeb.Router,
+        statics: TempMonitorWeb.static_paths()
     end
   end
 
