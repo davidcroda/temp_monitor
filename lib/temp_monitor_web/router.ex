@@ -29,6 +29,7 @@ defmodule TempMonitorWeb.Router do
     resources("/temperatures", TemperatureController)
     resources("/accounts", AccountController)
     get("/deepSleep", PageController, :deepSleep)
+    get("/settings", PageController, :settings)
   end
 
   # Enables the Swoosh mailbox preview in development.

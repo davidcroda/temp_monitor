@@ -2,7 +2,7 @@ defmodule TempMonitorWeb.GraphLive do
   use TempMonitorWeb, :live_view
 
   alias Phoenix.PubSub
-  alias TempMonitor.{Alerts, Data}
+  alias TempMonitor.{Alerts, Config, Data}
   alias Contex.Plot
 
   require Logger
@@ -16,6 +16,7 @@ defmodule TempMonitorWeb.GraphLive do
      socket
      |> assign(:temperature, Data.get_latest_temperature())
      |> assign(:accounts, Alerts.list_accounts())
+     |> assign(:settings, Config.list_settings())
      |> filter_graph()}
   end
 
@@ -61,6 +62,15 @@ defmodule TempMonitorWeb.GraphLive do
   def handle_event("filter_graph", %{"filter" => %{"since" => since}}, socket) do
     {since, _} = Integer.parse(since)
     {:noreply, filter_graph(socket, since)}
+  end
+
+  def handle_event("update_setting", %{"key" => key, "value" => value}, socket) do
+    Logger.debug("Setting #{key}: #{value}")
+
+    Config.get_setting!(key)
+    |> Config.update_setting(%{value: value})
+
+    {:noreply, socket}
   end
 
   def handle_event("toggle_notify", %{"account" => id}, socket) do

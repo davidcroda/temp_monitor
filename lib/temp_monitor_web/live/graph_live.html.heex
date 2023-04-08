@@ -53,9 +53,24 @@
           </ul>
         </div>
       <% end %>
+      <%= if @settings do %>
+        <.table id="settings" rows={@settings}>
+          <:col :let={setting} label="Settings">
+            <.input
+              type="text"
+              label={setting.key}
+              value={setting.value}
+              name={setting.key}
+              phx-blur="update_setting"
+              phx-value-key={setting.key}
+            >
+            </.input>
+          </:col>
+        </.table>
+      <% end %>
     </div>
     <div>
-      <.form let={f} for={:filter} phx-change="filter_graph">
+      <.form :let={f} for={%{}} as={:filter} phx-change="filter_graph">
         <%= select(
           f,
           :since,
