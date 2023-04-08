@@ -74,10 +74,13 @@
         <%= select(
           f,
           :since,
-          Enum.map(
-            60..360//60,
-            &{:"Last #{:erlang.float_to_binary(&1 / 60, decimals: 0)} Hour(s)", &1}
-          )
+          [
+            {"Last minute", 1},
+            {"Last 5 minutes", 5},
+            {"Last hour", 60},
+            {"Last 3 hours", 180},
+            {"Last 6 hours", 360}
+          ]
         ) %>
       </.form>
     </div>
