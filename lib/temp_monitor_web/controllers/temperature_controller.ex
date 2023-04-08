@@ -14,8 +14,10 @@ defmodule TempMonitorWeb.TemperatureController do
     render(conn, "index.json", temperatures: temperatures)
   end
 
-  def create(conn, temperature_params) do
-    with {:ok, %Temperature{} = temperature} <- Data.create_temperature(temperature_params) do
+  def create(conn, %{"t" => temperature, "h" => humidity}) do
+    params = %{"temperature" => temperature, "humidity" => humidity}
+
+    with {:ok, %Temperature{} = temperature} <- Data.create_temperature(params) do
       :ok = PubSub.broadcast(TempMonitor.PubSub, @topic, %{temperature: temperature})
 
       conn
