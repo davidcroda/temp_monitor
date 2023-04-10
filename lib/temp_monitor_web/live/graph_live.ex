@@ -2,7 +2,7 @@ defmodule TempMonitorWeb.GraphLive do
   use TempMonitorWeb, :live_view
 
   alias Phoenix.PubSub
-  alias TempMonitor.{Alerts, Config, Data}
+  alias TempMonitor.{Data}
   alias Contex.Plot
 
   require Logger
