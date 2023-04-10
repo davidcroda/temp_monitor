@@ -2,6 +2,10 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+a {
+  @apply underline hover:text-blue-400
+}
+
 /* This file is for your main application CSS */
 
 /* Alerts and form errors used by phx.new */

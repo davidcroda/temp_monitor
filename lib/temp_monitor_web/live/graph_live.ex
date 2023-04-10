@@ -15,12 +15,11 @@ defmodule TempMonitorWeb.GraphLive do
     {:ok,
      socket
      |> assign(:temperature, Data.get_latest_temperature())
-     |> assign(:accounts, Alerts.list_accounts())
-     |> assign(:settings, Config.list_settings())
-     |> filter_graph()}
+     |> assign(:current_view, "graph")
+     |> filter_graph(5)}
   end
 
-  defp filter_graph(socket, since \\ 60) do
+  defp filter_graph(socket, since) do
     socket
     |> assign(:temperatures, Data.list_temperatures_for_graph(since))
     |> build_chart()
@@ -58,32 +57,5 @@ defmodule TempMonitorWeb.GraphLive do
   def handle_event("filter_graph", %{"filter" => %{"since" => since}}, socket) do
     {since, _} = Integer.parse(since)
     {:noreply, filter_graph(socket, since)}
-  end
-
-  def handle_event("update_setting", %{"key" => key, "value" => value}, socket) do
-    Logger.debug("Setting #{key}: #{value}")
-
-    Config.get_setting!(key)
-    |> Config.update_setting(%{value: value})
-
-    {:noreply, socket}
-  end
-
-  def handle_event("toggle_notify", %{"account" => id}, socket) do
-    account = Alerts.get_account!(id)
-    {:ok, account} = Alerts.update_account(account, %{notify: !account.notify})
-
-    {:noreply,
-     assign(
-       socket,
-       :accounts,
-       socket.assigns[:accounts]
-       |> Enum.map(fn a ->
-         case a.id == account.id do
-           true -> account
-           false -> a
-         end
-       end)
-     )}
   end
 end

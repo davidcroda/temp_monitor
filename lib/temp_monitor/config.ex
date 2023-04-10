@@ -37,6 +37,8 @@ defmodule TempMonitor.Config do
   """
   def get_setting!(key), do: Repo.get_by!(Setting, key: key)
 
+  def get_setting(key), do: Repo.get_by(Setting, key: key)
+
   @spec get_value!(binary()) :: binary() | integer()
   def get_value!(key) do
     setting = get_setting!(key)

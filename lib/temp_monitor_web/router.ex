@@ -17,9 +17,10 @@ defmodule TempMonitorWeb.Router do
   scope "/", TempMonitorWeb do
     pipe_through(:browser)
 
-    # get "/", PageController, :index
-    # get "/", PageController, :graph
-    live("/", GraphLive)
+    live_session :default do
+      live("/", GraphLive)
+      live("/settings", SettingsLive)
+    end
   end
 
   # Other scopes may use custom stacks.

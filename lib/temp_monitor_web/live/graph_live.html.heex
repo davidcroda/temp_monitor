@@ -4,42 +4,6 @@
   </div>
   <div class="py-4 lg:px-4 pl-16 flex lg:flex-col flex-row justify-between">
     <div>
-      <table class="">
-        <thead class="border border-slate-300 text-slate-900 border-spacing-2">
-          <tr class="font-semibold ">
-            <th class="text-left p-1">
-              Name
-            </th>
-            <th class="p-1"><i class="font-bold fa-solid fa-envelope"></i></th>
-          </tr>
-        </thead>
-        <tbody>
-          <%= for account <- @accounts do %>
-            <tr class="">
-              <td class="p-1">
-                <div class="">
-                  <%= account.name %> (<%= account.phone %>)
-                </div>
-              </td>
-              <td>
-                <div
-                  class="text-lg shadow-md rounded-md p-2 bg-slate-300 border-zinc-400 border-solid border-2 cursor-pointer"
-                  phx-click="toggle_notify"
-                  phx-value-account={account.id}
-                >
-                  <%= case account.notify do
-                    true ->
-                      raw("<i class='font-bold fa-solid fa-check text-green-500'></i>")
-
-                    false ->
-                      raw("<i class=\"fa-solid fa-circle-xmark font-bold text-red-600\"></i>")
-                  end %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
       <%= if @temperature do %>
         <hr class="pb-4" />
         <div>
@@ -53,21 +17,6 @@
           </ul>
         </div>
       <% end %>
-      <%= if @settings do %>
-        <.table id="settings" rows={@settings}>
-          <:col :let={setting} label="Settings">
-            <.input
-              type="text"
-              label={setting.key}
-              value={setting.value}
-              name={setting.key}
-              phx-blur="update_setting"
-              phx-value-key={setting.key}
-            >
-            </.input>
-          </:col>
-        </.table>
-      <% end %>
     </div>
     <div>
       <.form :let={f} for={%{}} as={:filter} phx-change="filter_graph">
@@ -75,7 +24,6 @@
           f,
           :since,
           [
-            {"Last minute", 1},
             {"Last 5 minutes", 5},
             {"Last hour", 60},
             {"Last 3 hours", 180},
