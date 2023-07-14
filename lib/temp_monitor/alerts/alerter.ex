@@ -4,7 +4,7 @@ defmodule TempMonitor.Alerts.Alerter do
   alias TempMonitor.Data
   alias TempMonitor.Alerts
 
-  @max_time_threshold 300
+  @max_time_threshold 3600
   @max_average_temperature 5
   @check_interval 60_000
 
@@ -29,7 +29,7 @@ defmodule TempMonitor.Alerts.Alerter do
     valid = diff < @max_time_threshold
 
     if !valid do
-      Alerts.notify_all("Last freezer temperature reading [#{diff}] seconds ago!")
+      Alerts.notify_all("Last freezer temperature reading [#{Float.floor(diff / 60, 2)}] minutes ago!")
     end
 
     valid
